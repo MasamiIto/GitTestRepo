@@ -1,0 +1,136 @@
+//*****************************************************************************
+
+sudo docker images
+sudo docker run  -d -p 8086:8086 -p 8083:8083 -e INFLUXDB_ADMIN_ENABLED=true \
+  -v  /home/masami/share:/var/lib/influxdb \
+ influxdb:<XX>
+
+sudo docker ps
+sudo docker exec -it <ID> /bin/bash
+
+sudo  docker stop <ID>
+sudo docker rm <ID
+
+//*********************** GRAFANA ******************************************************
+sudo docker run  -d -p 3000:3000 -v /home/masami/share:/var/lib/grafana \
+ grafana/grafana:<XX>
+
+
+
+
+
+
+
+//*********************** INFLUX IMPORT ******************************************************
+
+curl https://s3.amazonaws.com/noaa.water-database/NOAA_data.txt -o NOAA_data.txt
+influx -import -path=NOAA_data.txt -precision=s -database=NOAA_water_database
+
+//********************************** Influxdbでの操作
+influx -precision rfc3339
+CREATE DATABASE mydb
+INSERT cpu,host=serverA,region=us_west value=0.64
+SELECT "host", "region", "value" FROM "cpu"
+INSERT temperature,machine=unit42,type=assembly external=25,internal=37
+
+CREATE
+curl -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE DATABASE mydb"
+
+curl -i -XPOST http://172.17.0.2:8086/write?db=mydb --data-binary 'cpu_load_short,host=server02,region=us-west value=0.64 1434055563000000000'
+curl -i -XPOST http://172.17.0.2:8086/write?db=mydb --data-binary @cpu_data.txt
+
+SHOW databases
+USE <XX>
+SHOW MESEUREMENTS
+
+SELECT * FROM <YY>
+
+CREATE <DB
+SHOW measurements
+
+//*********************** INFLUX IMPORT ******************************************************
+curl -X POST -d '[{"name":"foo","columns":["val"],"points":[[23]]}]' \
+'http://172.17.0.1:8086/db/influxdb/series?u=root&p=root'
+
+'http://localhost:8086/db/influxdb/series?u=root&p=root'
+
+
+weather,location=us-midwest temperature=82 1465839830100400200
+  |    -------------------- --------------  |
+  |             |             |             |
+  |             |             |             |
++-----------+--------+-+---------+-+---------+
+|measurement|,tag_set| |field_set| |timestamp|
++-----------+--------+-+---------+-+---------+
+
+INSERT weather,location=us-midwest temperature=50
+
+SELECT * INTO weather_copy FROM weather
+
+SELECT <function>(<field_key>)
+FROM_clause
+WHERE <time_range>
+GROUP BY time(<time_interval>,<offset_interval>),[tag_key] [fill(<fill_option: null/numeric/linear/none/previous>)]
+
+SELECT MAX(water_level) FROM h2o_feet WHERE time >= '2015-09-18T16:00:00Z' AND time <= '2015-09-18T16:42:00Z' GROUP BY time(12m,3m),location fill(0)
+
+SELECT water_level FROM h2o_feet GROUP BY * SLIMIT 1 SOFFSET 1
+
+SELECT water_level FROM h2o_feet
+WHERE time >= '2015-08-18T00:00:00Z' - 5m AND time <= '2015-08-18T00:00:00Z' + 5m tz('America/Chicago')
+
+SELECT * FROM /.*/ LIMIT 1
+
+
+//*********************** INFLUX IMPORT ******************************************************
+
+作成
+create database "db"
+
+一覧表示
+> show databases;
+name: databases
+name
+----
+_internal
+db
+
+
+削除
+drop database "db"
+
+measurements操作
+measurementsはテーブルのようなもの はじめに使用するデータベースを選択してから実行する
+use "db"
+
+作成
+insertで作成する measurement(meas)とtag key(key=1)とfields(value=2)を指定する
+insert meas,key=1 value=2
+
+一覧表示
+>show measurements
+name: measurements
+name
+----
+meas
+
+削除
+drop measurement "meas"
+
+measurementの中身操作
+tag key一覧表示
+> show tag keys
+name: meas
+tagKey
+------
+key
+
+tag keyのvalue一覧表示
+> show tag values with key = "key"
+name: meas
+key value
+--- -----
+key 1
+
+
+masami@masami-VirtualBox:~$
