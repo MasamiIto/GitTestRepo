@@ -1,0 +1,48 @@
+
+
+//********************** 1.Influx DB Docker 起動　*******************************************************
+
+sudo docker images
+sudo docker run  -d -p 8086:8086 -p 8083:8083 -e INFLUXDB_ADMIN_ENABLED=true \
+  -v  /home/masami/share:/var/lib/influxdb \
+ influxdb:<XX>
+
+sudo docker ps 
+sudo docker exec -it <ID> /bin/bash 
+
+sudo  docker stop <ID>
+sudo docker rm <ID
+
+//*********************** 2.GRAFANA Docker 起動　******************************************************
+
+sudo docker run  -d -p 3000:3000 -v /home/masami/shareGrafana:/var/lib/grafana \
+ grafana/grafana:<XX>
+
+//*********************** 3.Influxdb Docker に入って行う操作 ********************************
+influx -precision rfc3339
+
+SHOW databases
+CREATE DATABSE <DB>
+USE <XX>
+SHOW MEASUREMENTS
+SELECT * FROM <YY>
+
+例）
+CREATE DATABASE mydb
+INSERT cpu,host=serverA,region=us_west value=0.64
+SELECT "host", "region", "value" FROM "cpu"
+INSERT temperature,machine=unit42,type=assembly external=25,internal=37
+
+//*********************** 4.INFLUX 外部からの操作 ******************************************************
+ROBODB
+curl -i -XPOST http://172.17.0.2:8086/write?db=roboDB --data-binary @robo.txt
+curl -i -XPOST http://172.17.0.2:8086/write?db=roboDB --data-binary 'axis,KEY=10 J1=1.234 1551500568450211394'
+
+myDB
+curl -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE DATABASE mydb"
+curl -i -XPOST http://172.17.0.2:8086/write?db=mydb --data-binary @cpu_data.txt
+curl -i -XPOST http://172.17.0.2:8086/write?db=mydb --data-binary 'cpu_load_short,host=server02,region=us-west value=0.64 1434055563000000000'
+
+myDB
+curl https://s3.amazonaws.com/noaa.water-database/NOAA_data.txt -o NOAA_data.txt
+influx -import -path=NOAA_data.txt -precision=s -database=NOAA_water_database

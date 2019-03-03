@@ -1,0 +1,19 @@
+
+
+//*********************** INFLUX IMPORT ******************************************************
+
+作成 		create database "db"
+一覧表示 	show databases;
+削除 		drop database "db"
+
+measurements操作
+選択 		use "db"
+一覧表示 	show measurements
+作成 		insert meas,key=1 value=2
+削除 		drop measurement "meas"
+
+measurementの中身操作
+tag key一覧表示 		show tag keys
+tag keyのvalue一覧表示  show tag values with key = "key"
+
+

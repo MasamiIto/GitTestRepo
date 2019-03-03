@@ -1,0 +1,8 @@
+
+
+
+gcc -Wall -g mqtt_pub.cpp -o mqtt_pub  /usr/lib/x86_64-linux-gnu/libmosquitto.so.1
+
+./mqtt_pub -t 'ito/topic' -m 'Test'
+
+
